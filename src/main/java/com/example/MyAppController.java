@@ -23,16 +23,24 @@ public class MyAppController {
 		var height = heightField.getText();
 		var weight = weightField.getText();
 		if (!height.matches("\\d+") || !weight.matches("\\d+"))
-			return "-";
+			return "---";
+		// 10000 * weight / height^2 
 		double bmi = BigDecimal.valueOf(10000).multiply(new BigDecimal(weight))
 				.divide((new BigDecimal(height)).pow(2), 3, RoundingMode.HALF_UP).doubleValue();
-		System.out.println(bmi);
 		return String.valueOf(bmi);
 	}
 
 	public void initialize() {
 		bmiLabel.textProperty().bind(
 				Bindings.createStringBinding(() -> calcBMI(), heightField.textProperty(), weightField.textProperty()));
+		/*
+		var heightProperty = new SimpleDoubleProperty(); 
+		var weightProperty = new SimpleDoubleProperty(); 
+		var converter = new NumberStringConverter();
+		heightField.textProperty().bindBidirectional(heightProperty, converter);
+		weightField.textProperty().bindBidirectional(weightProperty, converter);
+		bmiLabel.textProperty().bind(Bindings.format("%.2f", weightProperty.multiply(10000).divide(heightProperty.multiply(heightProperty))));
+		*/
 	}
 
 }
